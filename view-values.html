@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stored Values</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            background-image: url("C:\Users\abish\Downloads\ncr_atleos.jpg"); /* Replace with the path to your background image */
+            background-size: cover;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 80%;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        h1 {
+            color: #4CAF50; /* Styling the title */
+            text-align: center; /* This centers the text */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .clear-button {
+            margin-top: 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Stored Values</h1>
+        <table id="outputTable">
+            <thead>
+                <tr>
+                    <th>Job Number</th>
+                    <th>First Measured Value</th>
+                    <th>Second Measured Value</th>
+                    <th>Third Measured Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be inserted here -->
+            </tbody>
+        </table>
+        <button class="clear-button" onclick="promptPasswordToClear()">Clear All</button>
+    </div>
+    <script>
+        function displayStoredValues() {
+            const outputTable = document.getElementById('outputTable').getElementsByTagName('tbody')[0];
+            outputTable.innerHTML = ''; // Clear the table first
+            const storedValues = JSON.parse(localStorage.getItem('storedValues')) || [];
+            storedValues.forEach(values => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${values[0]}</td><td>${values[1]}</td><td>${values[2]}</td><td>${values[3]}</td>`;
+                outputTable.appendChild(row);
+            });
+        }
+
+        function promptPasswordToClear() {
+            const password = prompt("Enter password to clear all values:");
+            if (password === "clear-password") { // Replace 'clear-password' with your desired password
+                clearStoredValues();
+            } else {
+                alert("Incorrect password");
+            }
+        }
+
+        function clearStoredValues() {
+            localStorage.removeItem('storedValues');
+            displayStoredValues();
+            alert("All values cleared.");
+        }
+
+        // Call the function to display values on page load
+        document.addEventListener('DOMContentLoaded', displayStoredValues);
+    </script>
+</body>
+</html>

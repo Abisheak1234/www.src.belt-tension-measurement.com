@@ -1,0 +1,133 @@
+
+<html>
+<head>
+    <title> </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-green: #f0f0f0;
+            background-image:'C:\Users\abish\Downloads\ncr_atleos.jpg'; /* Replace with the path to your background image */
+            background-size: cover;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 80%;
+        }
+        .logo {
+            max-width: 500px; /* Increase size */
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        h1 {
+            color: #4CAF50; /* Styling the title */
+            text-align: center; /* This centers the text */
+        }
+        form .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px 0;
+        }
+        form .input-group label {
+            margin-bottom: 5px;
+            width: 200px; /* Ensure labels have same width for alignment */
+        }
+        form .input-group input {
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 100%;
+            max-width: 300px; /* Set a max-width for better alignment */
+        }
+        .clear-button, .view-button {
+            margin-top: 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="file:///C:/Users/abish/Downloads/download.jfif" class="logo"> <!-- Replace with the path to your logo image -->
+        <h1>NCR-SRU Belt Tension Measurement Entry Portal</h1>
+        <form id="valueForm">
+            <div class="input-group">
+                <label for="unit">Job Number:</label>
+                <input type="text" id="unit" placeholder="">
+            </div>
+            <div class="input-group">
+                <label for="value1">First Measured Value:</label>
+                <input type="number" id="value1" step="0.1">
+            </div>
+            <div class="input-group">
+                <label for="value2">Second Measured Value:</label>
+                <input type="number" id="value2" step="0.1">
+            </div>
+            <div class="input-group">
+                <label for="value3">Third Measured Value:</label>
+                <input type="number" id="value3" step="0.1">
+            </div>
+            <button type="button" onclick="validateAndStore()">Submit</button>
+            <button type="button" class="view-button" onclick="promptPasswordToView()">View Stored Values</button>
+        </form>
+        <p id="result"></p>
+    </div>
+    <script>
+        function validateAndStore() {
+            const unit = document.getElementById('unit').value;
+            const value1 = parseFloat(document.getElementById('value1').value);
+            const value2 = parseFloat(document.getElementById('value2').value);
+            const value3 = parseFloat(document.getElementById('value3').value);
+            const resultElement = document.getElementById('result');
+
+            if (isNaN(value1) || isNaN(value2) || isNaN(value3) || unit === "") {
+                resultElement.textContent = "Please enter valid numbers and unit.";
+                resultElement.classList.remove('success');
+                return;
+            }
+
+            if (value1 >= 9.5 && value1 <= 10.5 &&
+                value2 >= 9.5 && value2 <= 10.5 &&
+                value3 >= 9.5 && value3 <= 10.5) {
+                let storedValues = JSON.parse(localStorage.getItem('storedValues')) || [];
+                storedValues.push([unit, value1, value2, value3]);
+                localStorage.setItem('storedValues', JSON.stringify(storedValues));
+
+                resultElement.innerHTML = "Task succeeded <span class='success'>&#10004;</span>";
+                resultElement.classList.add('success');
+            } else {
+                resultElement.textContent = "Invalid: Each value must be between 9.5 and 10.5.";
+                resultElement.classList.remove('success');
+            }
+        }
+
+        function promptPasswordToView() {
+            const password = prompt("Enter password to view stored values:");
+            if (password === "your-password") { // Replace 'your-password' with your desired password
+                window.location.href = "view-values.html"; // Redirect to the second page
+            } else {
+                alert("Incorrect password");
+            }
+        }
+    </script>
+</body>
+</html>
+
